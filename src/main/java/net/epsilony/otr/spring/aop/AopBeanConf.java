@@ -42,6 +42,11 @@ public class AopBeanConf {
         return new AopAspect();
     }
 
+    @Bean
+    public SecondAspect secondAspect() {
+        return new SecondAspect();
+    }
+
     public static void main(String[] args) {
         LogUtil.setSpringLogLevel(Level.ERROR);
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
