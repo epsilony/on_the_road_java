@@ -73,6 +73,14 @@ public class ProgrammaticalAddBean {
         }
     }
 
+    @Configuration
+    public static class DisturbingConfig {
+        @Bean
+        public String progBean() {
+            return "progBean before overrided";
+        }
+    }
+
     public GenericBeanDefinition newDefinition() {
         GenericBeanDefinition definition = new GenericBeanDefinition();
         definition.setBeanClass(SampleBeanClass.class);
@@ -88,6 +96,7 @@ public class ProgrammaticalAddBean {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.register(BaseJavaConfig.class);
         context.register(OtherBeansDependentsOnProgramBean.class);
+        context.register(DisturbingConfig.class);
         context.registerBeanDefinition("progBean", newDefinition());
         context.refresh();
         return context;
