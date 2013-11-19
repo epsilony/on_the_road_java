@@ -16,7 +16,9 @@
  */
 package net.epsilony.otr.spring;
 
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
+import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -55,10 +57,10 @@ public class ProgrammaticalByBeanFactory_fail {
             return factory;
         }
 
-        @Bean
-        public String myBean() {
-            return afactory().produce();
-        }
+        // @Bean
+        // public String myBean() {
+        // return afactory().produce();
+        // }
     }
 
     public GenericBeanDefinition contentOverriden() {
@@ -67,6 +69,15 @@ public class ProgrammaticalByBeanFactory_fail {
         ConstructorArgumentValues values = new ConstructorArgumentValues();
         values.addGenericArgumentValue("touched");
         definition.setConstructorArgumentValues(values);
+        return definition;
+    }
+
+    public GenericBeanDefinition afactoryDef() {
+        GenericBeanDefinition definition = new GenericBeanDefinition();
+        definition.setBeanClass(AFactory.class);
+        MutablePropertyValues propertyValues = new MutablePropertyValues();
+        propertyValues.add("content", new RuntimeBeanReference("content"));
+        definition.setPropertyValues(propertyValues);
         return definition;
     }
 
@@ -83,8 +94,10 @@ public class ProgrammaticalByBeanFactory_fail {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.register(ConfigurationClass.class);
         context.registerBeanDefinition("content", contentOverriden());
-        // context.registerBeanDefinition("myBean", myBeanDef()); // <------
-        // doesn't work!
+        context.registerBeanDefinition("afactory", afactoryDef()); // <--- must
+                                                                   // be defined
+                                                                   // here!
+        context.registerBeanDefinition("myBean", myBeanDef());
         context.refresh();
         return context;
     }
