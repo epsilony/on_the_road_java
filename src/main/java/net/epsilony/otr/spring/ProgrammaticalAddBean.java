@@ -19,6 +19,7 @@ package net.epsilony.otr.spring;
 import javax.annotation.Resource;
 
 import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.factory.config.ConstructorArgumentValues;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.ApplicationContext;
@@ -92,11 +93,21 @@ public class ProgrammaticalAddBean {
         return definition;
     }
 
+    public GenericBeanDefinition beanAOverridenByConstructor() {
+        GenericBeanDefinition definition = new GenericBeanDefinition();
+        definition.setBeanClass(String.class);
+        ConstructorArgumentValues constructorArgumentValues = new ConstructorArgumentValues();
+        constructorArgumentValues.addGenericArgumentValue("prog overrided A");
+        definition.setConstructorArgumentValues(constructorArgumentValues);
+        return definition;
+    }
+
     public ApplicationContext getContext() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.register(BaseJavaConfig.class);
         context.register(OtherBeansDependentsOnProgramBean.class);
         context.register(DisturbingConfig.class);
+        context.registerBeanDefinition("beanA", beanAOverridenByConstructor());
         context.registerBeanDefinition("progBean", newDefinition());
         context.refresh();
         return context;
