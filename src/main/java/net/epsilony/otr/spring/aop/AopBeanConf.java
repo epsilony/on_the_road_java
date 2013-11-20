@@ -53,10 +53,13 @@ public class AopBeanConf {
         context.register(AopBeanConf.class);
         context.refresh();
 
-        PojoType pojo = context.getBean("pojo", PojoType.class);
+        PojoType pojo = (PojoType) context.getBean("pojo");
         String result = pojo.pojoMethod("just an input arg");
-
         System.out.println("pojoMethod result " + result);
+
+        PojoType pojo2 = (PojoType) context.getBean("pojo");
+        String result2 = pojo2.pojoMethod("input 2");
+        System.out.println("pojo2Method result " + result2);
 
         context.close();
     }
