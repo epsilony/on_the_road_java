@@ -22,6 +22,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 
 import ch.qos.logback.classic.Level;
 
@@ -33,6 +35,7 @@ import ch.qos.logback.classic.Level;
 @EnableAspectJAutoProxy
 public class AopBeanConf {
     @Bean
+    @Scope(value = "prototype", proxyMode = ScopedProxyMode.DEFAULT)
     public PojoType pojo() {
         return new PojoType();
     }
@@ -56,6 +59,8 @@ public class AopBeanConf {
         PojoType pojo = (PojoType) context.getBean("pojo");
         String result = pojo.pojoMethod("just an input arg");
         System.out.println("pojoMethod result " + result);
+
+        System.out.println("-------------------------second pojo------------------------------");
 
         PojoType pojo2 = (PojoType) context.getBean("pojo");
         String result2 = pojo2.pojoMethod("input 2");
