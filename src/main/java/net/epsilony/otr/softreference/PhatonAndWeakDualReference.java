@@ -16,6 +16,9 @@
  */
 package net.epsilony.otr.softreference;
 
+import java.lang.ref.PhantomReference;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
@@ -23,19 +26,25 @@ import java.util.Arrays;
  * @author Man YUAN <epsilon@epsilony.net>
  * 
  */
-public class DualWeakReference {
+public class PhatonAndWeakDualReference {
 
     public static class Mock {
 
     }
 
     public static void main(String[] args) {
-        WeakReference<Mock> ref1, ref2;
+        WeakReference<Mock> weakRef;
+        ReferenceQueue<Mock> rq = new ReferenceQueue<>();
+        PhantomReference<Mock> phantomReference;
+
         Mock mock = new Mock();
-        ref1 = new WeakReference<>(mock);
-        ref2 = new WeakReference<>(mock);
+        weakRef = new WeakReference<PhatonAndWeakDualReference.Mock>(mock);
+        phantomReference = new PhantomReference<PhatonAndWeakDualReference.Mock>(mock, rq);
         mock = null;
         System.gc();
-        System.out.println(Arrays.asList(ref1.get(), ref2.get()));
+        System.out.println(Arrays.asList(weakRef.get()));
+        Reference<? extends Mock> poll = rq.poll();
+        System.out.println("poll==phantomReference = " + (poll == phantomReference));
+
     }
 }

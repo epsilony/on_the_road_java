@@ -14,28 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package net.epsilony.otr.softreference;
+package net.epsilony.otr.collection;
 
-import java.lang.ref.WeakReference;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Man YUAN <epsilon@epsilony.net>
  * 
  */
-public class DualWeakReference {
+public class HashMapRemove {
+    Map<Integer, Integer> map = new HashMap<>();
 
-    public static class Mock {
+    HashMapRemove() {
+        for (int i = 0; i < 100; i++) {
+            map.put(i, i * 100);
+        }
+    }
 
+    public void removeOver10() {
+        Set<Integer> keySet = map.keySet();
+        for (Integer key : keySet) {
+            if (key > 10) {
+                keySet.remove(key);
+            }
+        }
     }
 
     public static void main(String[] args) {
-        WeakReference<Mock> ref1, ref2;
-        Mock mock = new Mock();
-        ref1 = new WeakReference<>(mock);
-        ref2 = new WeakReference<>(mock);
-        mock = null;
-        System.gc();
-        System.out.println(Arrays.asList(ref1.get(), ref2.get()));
+        new HashMapRemove().removeOver10();
     }
 }
