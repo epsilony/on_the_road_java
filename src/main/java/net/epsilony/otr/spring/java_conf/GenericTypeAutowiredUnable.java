@@ -19,8 +19,9 @@ package net.epsilony.otr.spring.java_conf;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -43,8 +44,11 @@ public class GenericTypeAutowiredUnable {
 
     @Configuration
     public static class ConfigB implements ApplicationContextAware {
-        @Autowired
+        // @Autowired
         // alternative comment below
+        // List<TypeTwo> a;
+
+        @Resource
         List<TypeTwo> a;
 
         private ApplicationContext applicationContext;
