@@ -16,12 +16,14 @@
  */
 package net.epsilony.otr.pattern.convertor;
 
+import java.util.function.Function;
+
 /**
  * @author Man YUAN <epsilon@epsilony.net>
  * 
  */
 public class ConvertorLinker<IN, OUT> {
-    Convertor<IN, OUT> convertor;
+    Function<IN, OUT> convertor;
 
     public <C> ConvertorLinker<IN, C> test(Class<C> cls) {
         return new ConvertorLinker<IN, C>();

@@ -18,15 +18,16 @@ package net.epsilony.otr.pattern.convertor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.Function;
 
 /**
  * @author Man YUAN <epsilon@epsilony.net>
  * 
  */
-public class WordToCharcs implements Convertor<Word, Collection<Charc>> {
+public class WordToCharcs implements Function<Word, Collection<Charc>> {
 
     @Override
-    public Collection<Charc> convert(Word input) {
+    public Collection<Charc> apply(Word input) {
         ArrayList<Charc> result = new ArrayList<>(input.getWord().length());
         String w = input.getWord();
         for (int i = 0; i < w.length(); i++) {

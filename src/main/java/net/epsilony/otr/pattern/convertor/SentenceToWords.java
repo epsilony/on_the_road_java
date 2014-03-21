@@ -19,15 +19,16 @@ package net.epsilony.otr.pattern.convertor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * @author Man YUAN <epsilon@epsilony.net>
  * 
  */
-public class SentenceToWords implements Convertor<Sentence, Collection<Word>> {
+public class SentenceToWords implements Function<Sentence, Collection<Word>> {
 
     @Override
-    public Collection<Word> convert(Sentence sentence) {
+    public Collection<Word> apply(Sentence sentence) {
         String[] split = sentence.getSentence().split(" ");
         List<Word> result = new ArrayList<>(split.length);
         for (String s : split) {

@@ -18,6 +18,7 @@ package net.epsilony.otr.pattern.convertor;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Function;
 
 /**
  * @author Man YUAN <epsilon@epsilony.net>
@@ -25,7 +26,7 @@ import java.util.Iterator;
  */
 public class OneManyConvertorIterator<IN, OUT> implements StreamIterator<IN, OUT> {
     Iterator<? extends IN> upstream;
-    Convertor<? super IN, ? extends Collection<? extends OUT>> convertor;
+    Function<? super IN, ? extends Collection<? extends OUT>> convertor;
     Iterator<? extends OUT> outerIterator;
     boolean prepared = false;
 
@@ -35,11 +36,11 @@ public class OneManyConvertorIterator<IN, OUT> implements StreamIterator<IN, OUT
         this.upstream = upstream;
     }
 
-    public Convertor<? super IN, ? extends Collection<? extends OUT>> getConvertor() {
+    public Function<? super IN, ? extends Collection<? extends OUT>> getConvertor() {
         return convertor;
     }
 
-    public void setConvertor(Convertor<? super IN, ? extends Collection<? extends OUT>> convertor) {
+    public void setConvertor(Function<? super IN, ? extends Collection<? extends OUT>> convertor) {
         prepared = false;
         this.convertor = convertor;
     }
@@ -54,7 +55,7 @@ public class OneManyConvertorIterator<IN, OUT> implements StreamIterator<IN, OUT
 
     protected void nextOuterIterator() {
         while (upstream.hasNext()) {
-            outerIterator = convertor.convert(upstream.next()).iterator();
+            outerIterator = convertor.apply(upstream.next()).iterator();
             if (outerIterator.hasNext()) {
                 break;
             }

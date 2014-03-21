@@ -17,6 +17,7 @@
 package net.epsilony.otr.pattern.convertor;
 
 import java.util.Iterator;
+import java.util.function.Function;
 
 /**
  * @author Man YUAN <epsilon@epsilony.net>
@@ -27,7 +28,7 @@ public class CascadeConvertorIterator<IN, OUT> implements StreamIterator<IN, OUT
     @SuppressWarnings("rawtypes")
     private StreamIterator headIterator, firstIterator;
 
-    public void push(Convertor<?, ?> convertor) {
+    public void push(Function<?, ?> convertor) {
         ConvertorMapType annotation = convertor.getClass().getAnnotation(ConvertorMapType.class);
         if (null == annotation) {
             throw new IllegalArgumentException();
@@ -36,7 +37,7 @@ public class CascadeConvertorIterator<IN, OUT> implements StreamIterator<IN, OUT
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void push(Convertor<?, ?> convertor, MapType mapType) {
+    public void push(Function<?, ?> convertor, MapType mapType) {
         StreamIterator newIterator;
         switch (mapType) {
         case ONE_TO_MANY:

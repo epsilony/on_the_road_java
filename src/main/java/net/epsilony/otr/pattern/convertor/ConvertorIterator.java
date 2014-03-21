@@ -19,6 +19,7 @@ package net.epsilony.otr.pattern.convertor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.function.Function;
 
 /**
  * @author Man YUAN <epsilon@epsilony.net>
@@ -26,7 +27,7 @@ import java.util.Iterator;
  */
 public class ConvertorIterator<IN, OUT> implements Iterator<OUT> {
     Iterator<? extends IN> upstream;
-    Convertor<IN, ? extends Collection<? extends OUT>> convertor;
+    Function<IN, ? extends Collection<? extends OUT>> convertor;
     Iterator<? extends OUT> outerIterator;
     boolean prepared = false;
 
@@ -35,11 +36,11 @@ public class ConvertorIterator<IN, OUT> implements Iterator<OUT> {
         this.upstream = upstream;
     }
 
-    public Convertor<IN, ? extends Collection<? extends OUT>> getConvertor() {
+    public Function<IN, ? extends Collection<? extends OUT>> getConvertor() {
         return convertor;
     }
 
-    public void setConvertor(Convertor<IN, ? extends Collection<? extends OUT>> convertor) {
+    public void setConvertor(Function<IN, ? extends Collection<? extends OUT>> convertor) {
         prepared = false;
         this.convertor = convertor;
     }
@@ -54,7 +55,7 @@ public class ConvertorIterator<IN, OUT> implements Iterator<OUT> {
 
     protected void nextOuterIterator() {
         while (upstream.hasNext()) {
-            outerIterator = convertor.convert(upstream.next()).iterator();
+            outerIterator = convertor.apply(upstream.next()).iterator();
             if (outerIterator.hasNext()) {
                 break;
             }
