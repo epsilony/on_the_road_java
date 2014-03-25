@@ -44,10 +44,11 @@ public class GenericTypeAutowiredUnable {
 
     @Configuration
     public static class ConfigB implements ApplicationContextAware {
+        // @Autowired dose not work till spring 4.0.2
         // @Autowired
-        // alternative comment below
         // List<TypeTwo> a;
 
+        // Only Resource works
         @Resource
         List<TypeTwo> a;
 
@@ -55,7 +56,7 @@ public class GenericTypeAutowiredUnable {
 
         @Bean
         public String b() {
-            // alternative uncomment two lines below:
+            // alternative:
             // List<? extends TypeOne> a = (List<? extends TypeOne>)
             // applicationContext.getBean("a");
             return a.toString();
@@ -75,7 +76,6 @@ public class GenericTypeAutowiredUnable {
     };
 
     public static void main(String[] args) {
-        // fail still at 4.0.1.release
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
         applicationContext.register(ConfigB.class);
         applicationContext.register(ConfigA.class);
