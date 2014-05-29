@@ -80,8 +80,7 @@ public class ConvertorIterator<IN, OUT> implements Iterator<OUT> {
 
     @Override
     public void remove() {
-        // TODO Auto-generated method stub
-
+        throw new UnsupportedOperationException();
     }
 
     public static void main(String[] args) {
